@@ -1,6 +1,6 @@
 # -*-coding:UTF-8 -*
 # Auteur : AlzoxX76
-# Date : 23/06/2018
+# Date : 26/06/2018
 # Version : 0.3
 
 import requests
