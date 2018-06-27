@@ -1,17 +1,19 @@
 # -*-coding:UTF-8 -*
 # Auteur : AlzoxX76
-# Date : 26/06/2018
+# Date : 27/06/2018
 # Version : 0.3
 
 import requests
 import json
 
 
-URLcookies = "https://www.deezer.com"
-URLlogin = "https://www.deezer.com//ajax/action.php"
+URLcookies = "http://www.deezer.com"
+URLlogin = "http://www.deezer.com//ajax/action.php"
+
+
 
 def getMethodUrlWithToken(method, token=""):
-	return "https://www.deezer.com/ajax/gw-light.php?method=" + method + "&input=3&api_version=1.0&api_token=" + token
+	return "http://www.deezer.com/ajax/gw-light.php?method=" + method + "&input=3&api_version=1.0&api_token=" + token
 
 
 class DeezerClient:
@@ -28,8 +30,10 @@ class DeezerClient:
 
 		self.deezerAPITOKEN = userInfo['checkForm'] # checkForm key is the API key
 
-	def login(self, email, mdp):
-		r = self.client.post(URLlogin, data=dict(type="login", mail=email, password=mdp), cookies=self.client.cookies)
+	def login(self, email, mdp, proxy=dict()):
+		r = self.client.post(URLlogin, data=dict(type="login", mail=email, password=mdp), cookies=self.client.cookies, proxies=proxy, timeout=2.5)
+		if r.text != "error" and r.text != "success":
+			raise Exception("Unknow return value for login")
 		return r.text == "success"
 
 	def getMethodDeezerAPI(self, method, dataRequest=str()):
